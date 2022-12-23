@@ -12,6 +12,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,10 @@ public class MainActivity2 extends AppCompatActivity {
                         try {
                             String username = object.getString("name");
                             binding.username.setText(username);
+
+                            String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                            Picasso.get().load(url).into(binding.userimg);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("sssssssssss", "fail: " + e.getLocalizedMessage());
@@ -49,7 +54,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link");
+        parameters.putString("fields", "id,name,link,picture.type(large)");
         request.setParameters(parameters);
         request.executeAsync();
 
